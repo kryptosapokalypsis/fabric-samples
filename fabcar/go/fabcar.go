@@ -13,8 +13,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/kryptosapokalypsis/fabric-sdk-go/pkg/core/config"
-	"github.com/kryptosapokalypsis/fabric-sdk-go/pkg/gateway"
+	"github.com/kryptosapokalypsis/hyperledger/fabric-sdk-go/pkg/core/config"
+	"github.com/kryptosapokalypsis/hyperledger/fabric-sdk-go/pkg/gateway"
 )
 
 func main() {
@@ -68,7 +68,7 @@ func main() {
 	}
 	fmt.Println(string(result))
 
-	result, err = contract.SubmitTransaction("createCar", "CAR10", "VW", "Polo", "Grey", "Mary")
+	result, err = contract.SubmitTransaction("createCar", "CAR10", "VW", "Polo", "5.2", "Grey", "Mary")
 	if err != nil {
 		fmt.Printf("Failed to submit transaction: %s\n", err)
 		os.Exit(1)
