@@ -13,8 +13,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/hyperledger/fabric-sdk-go/pkg/core/config"
-	"github.com/hyperledger/fabric-sdk-go/pkg/gateway"
+	"github.com/kryptosapokalypsis/fabric-sdk-go/pkg/core/config"
+	"github.com/kryptosapokalypsis/fabric-sdk-go/pkg/gateway"
 )
 
 func main() {
