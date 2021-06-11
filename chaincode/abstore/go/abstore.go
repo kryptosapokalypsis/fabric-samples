@@ -69,7 +69,7 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 		return fmt.Errorf("Entity not found")
 	}
 
-	Aval, _ = strconv.Atoi(string(Avalbytes))
+	Aval, _ = strconv.ParseFloat(string(Avalbytes), 64)
 
 	//Hospital B
 	Bvalbytes, err := ctx.GetStub().GetState(B)
@@ -79,7 +79,7 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 	if Bvalbytes == nil {
 		return fmt.Errorf("Entity not found")
 	}
-	Bval, _ = strconv.Atoi(string(Bvalbytes))
+	Bval, _ = strconv.ParseFloat(string(Bvalbytes), 64)
 
 	// Hospital C
 	Cvalbytes, err := ctx.GetStub().GetState(C)
@@ -90,7 +90,7 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 		return fmt.Errorf("Entity not found")
 	}
 
-	Cval, _ = strconv.Atoi(string(Cvalbytes))
+	Cval, _ = strconv.ParseFloat(string(Cvalbytes), 64)
 
 	//Hospital D
 	Dvalbytes, err := ctx.GetStub().GetState(D)
@@ -101,7 +101,7 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 		return fmt.Errorf("Entity not found")
 	}
 
-	Dval, _ = strconv.Formatfloat(string(Dvalbytes))
+	Dval, _ = strconv.ParseFloat(string(Dvalbytes), 64)
 
 	// Perform the execution
 	Aval = Aval + W
@@ -115,20 +115,20 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 	fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
-	err = ctx.GetStub().PutState(A, []byte(strconv.FormatFloat(Aval, 64)))
+	err = ctx.GetStub().PutState(A, []byte(strconv.FormatFloat(Aval, 'f', -1, 64)))
 	if err != nil {
 		return err
 	}
 
-	err = ctx.GetStub().PutState(B, []byte(strconv.ParseFloat(Bval, 64)))
+	err = ctx.GetStub().PutState(B, []byte(strconv.FormatFloat(Bval, 'f', -1, 64)))
 	if err != nil {
 		return err
 	}
-	err = ctx.GetStub().PutState(C, []byte(strconv.ParseFloat(Cval, 64)))
+	err = ctx.GetStub().PutState(C, []byte(strconv.FormatFloat(Cval, 'f', -1, 64)))
 	if err != nil {
 		return err
 	}
-	err = ctx.GetStub().PutState(D, []byte(strconv.ParseFloat(Dval, 64)))
+	err = ctx.GetStub().PutState(D, []byte(strconv.FormatFloat(Dval, 'f', -1, 64)))
 	if err != nil {
 		return err
 	}
