@@ -49,12 +49,18 @@ func (t *ABstore) Init(ctx contractapi.TransactionContextInterface, A string, Av
 }
 
 // Transaction makes payment of X units from A to B
-func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B string, X int) error {
+func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D string, W, X, Y, Z float64) error {
 	var err error
-	var Aval int
-	var Bval int
+	var Aval float64
+	var Bval float64
+	var Cval float64
+	var Dval float64
+	var total float64
+
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
+
+	//Hospital A
 	Avalbytes, err := ctx.GetStub().GetState(A)
 	if err != nil {
 		return fmt.Errorf("Failed to get state")
@@ -62,8 +68,10 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B strin
 	if Avalbytes == nil {
 		return fmt.Errorf("Entity not found")
 	}
+
 	Aval, _ = strconv.Atoi(string(Avalbytes))
 
+	//Hospital B
 	Bvalbytes, err := ctx.GetStub().GetState(B)
 	if err != nil {
 		return fmt.Errorf("Failed to get state")
@@ -73,22 +81,57 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B strin
 	}
 	Bval, _ = strconv.Atoi(string(Bvalbytes))
 
+	// Hospital C
+	Cvalbytes, err := ctx.GetStub().GetState(C)
+	if err != nil {
+		return fmt.Errorf("Failed to get state")
+	}
+	if Cvalbytes == nil {
+		return fmt.Errorf("Entity not found")
+	}
+
+	Cval, _ = strconv.Atoi(string(Cvalbytes))
+
+	//Hospital D
+	Dvalbytes, err := ctx.GetStub().GetState(D)
+	if err != nil {
+		return fmt.Errorf("Failed to get state")
+	}
+	if Dvalbytes == nil {
+		return fmt.Errorf("Entity not found")
+	}
+
+	Dval, _ = strconv.Formatfloat(string(Dvalbytes))
+
 	// Perform the execution
-	Aval = Aval - X
+	Aval = Aval + W
 	Bval = Bval + X
+	Cval = Cval + Y
+	Dval = Dval + Z
+	total = Aval + Bval + Cval + Dval
+	if 1.0 >= total {
+		fmt.Printf("total = %d", total)
+	}
 	fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state back to the ledger
-	err = ctx.GetStub().PutState(A, []byte(strconv.Itoa(Aval)))
+	err = ctx.GetStub().PutState(A, []byte(strconv.FormatFloat(Aval, 64)))
 	if err != nil {
 		return err
 	}
 
-	err = ctx.GetStub().PutState(B, []byte(strconv.Itoa(Bval)))
+	err = ctx.GetStub().PutState(B, []byte(strconv.ParseFloat(Bval, 64)))
 	if err != nil {
 		return err
 	}
-
+	err = ctx.GetStub().PutState(C, []byte(strconv.ParseFloat(Cval, 64)))
+	if err != nil {
+		return err
+	}
+	err = ctx.GetStub().PutState(D, []byte(strconv.ParseFloat(Dval, 64)))
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
