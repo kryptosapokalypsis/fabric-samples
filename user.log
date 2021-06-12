@@ -1,6 +1,7 @@
-################
-##network up   #
-################
+///////////////////////////////////////////////////
+// ./network down
+// changes network from a state of 'down' to 'up'
+///////////////////////////////////////////////////
 
 $ ./network.sh up
 Starting nodes with CLI timeout of '5' tries and CLI delay of '3' seconds and using database 'leveldb' with crypto from 'cryptogen'
@@ -34,10 +35,10 @@ CONTAINER ID   IMAGE                               COMMAND             CREATED  
 f44649d2f8b0   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   0.0.0.0:7051->7051/tcp                           peer0.org1.example.com
 e2eb5eb9f3c5   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   7051/tcp, 0.0.0.0:9051->9051/tcp                 peer0.org2.example.com
 
-
-################
-##network down #
-################
+///////////////////////////////////////////////////
+// ./network down
+// changes network from a state of 'up' to 'down'
+///////////////////////////////////////////////////
 
 $ ./network.sh down
 Stopping network
@@ -57,3 +58,6 @@ ERROR: The Compose file './addOrg3/docker/docker-compose-couch-org3.yaml' is inv
 networks.test value Additional properties are not allowed ('name' was unexpected)
 Removing remaining containers
 Removing generated chaincode docker images
+
+
+
