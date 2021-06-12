@@ -51,13 +51,24 @@ func (t *ABstore) Init(ctx contractapi.TransactionContextInterface, A string, Av
 // Transaction makes payment of X units from A to B
 func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D string, W, X, Y, Z float64) error {
 	var err error
+<<<<<<< HEAD
 	var Aval float64 = 0.0
 	var Bval float64 = 0.0
 	var Cval float64 = 0.0
 	var Dval float64 = 0.0
 	var Total float64 = 0.0
+=======
+	var Aval float64
+	var Bval float64
+	var Cval float64
+	var Dval float64
+	var total float64
+
+>>>>>>> 7fc60561472744da96e9fe247a526fe476179e24
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
+
+	//Hospital A
 	Avalbytes, err := ctx.GetStub().GetState(A)
 	if err != nil {
 		return fmt.Errorf("Failed to get state")
@@ -65,8 +76,14 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 	if Avalbytes == nil {
 		return fmt.Errorf("Entity not found")
 	}
+<<<<<<< HEAD
+	Aval, _ = strconv.ParseFloat(string(Avalbytes), 64)
+=======
+>>>>>>> 7fc60561472744da96e9fe247a526fe476179e24
+
 	Aval, _ = strconv.ParseFloat(string(Avalbytes), 64)
 
+	//Hospital B
 	Bvalbytes, err := ctx.GetStub().GetState(B)
 	if err != nil {
 		return fmt.Errorf("Failed to get state")
@@ -76,7 +93,12 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 	}
 	Bval, _ = strconv.ParseFloat(string(Bvalbytes), 64)
 
+<<<<<<< HEAD
 	Cvalbytes, err := ctx.GetStub().GetState(A)
+=======
+	// Hospital C
+	Cvalbytes, err := ctx.GetStub().GetState(C)
+>>>>>>> 7fc60561472744da96e9fe247a526fe476179e24
 	if err != nil {
 		return fmt.Errorf("Failed to get state")
 	}
@@ -121,7 +143,6 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D
 	if err != nil {
 		return err
 	}
-
 	return nil
 
 	err = ctx.GetStub().PutState(B, []byte(strconv.FormatFloat(Dval, 'E', -1, 64)))
