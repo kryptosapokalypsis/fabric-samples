@@ -1,8 +1,8 @@
 ################
-##network start#
+##network up   #
 ################
 
-/network.sh up
+$ ./network.sh up
 Starting nodes with CLI timeout of '5' tries and CLI delay of '3' seconds and using database 'leveldb' with crypto from 'cryptogen'
 LOCAL_VERSION=2.3.2
 DOCKER_IMAGE_VERSION=2.3.2
@@ -33,3 +33,27 @@ CONTAINER ID   IMAGE                               COMMAND             CREATED  
 624219b38217   hyperledger/fabric-orderer:latest   "orderer"           1 second ago             Up Less than a second   0.0.0.0:7050->7050/tcp, 0.0.0.0:7053->7053/tcp   orderer.example.com
 f44649d2f8b0   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   0.0.0.0:7051->7051/tcp                           peer0.org1.example.com
 e2eb5eb9f3c5   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   7051/tcp, 0.0.0.0:9051->9051/tcp                 peer0.org2.example.com
+
+
+################
+##network down #
+################
+
+$ ./network.sh down
+Stopping network
+Stopping cli                    ... done
+Stopping orderer.example.com    ... done
+Stopping peer0.org1.example.com ... done
+Stopping peer0.org2.example.com ... done
+Removing cli                    ... done
+Removing orderer.example.com    ... done
+Removing peer0.org1.example.com ... done
+Removing peer0.org2.example.com ... done
+Removing network fabric_test
+Removing volume docker_orderer.example.com
+Removing volume docker_peer0.org1.example.com
+Removing volume docker_peer0.org2.example.com
+ERROR: The Compose file './addOrg3/docker/docker-compose-couch-org3.yaml' is invalid because:
+networks.test value Additional properties are not allowed ('name' was unexpected)
+Removing remaining containers
+Removing generated chaincode docker images
