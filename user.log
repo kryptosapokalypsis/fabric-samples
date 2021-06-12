@@ -1,0 +1,35 @@
+################
+##network start#
+################
+
+/network.sh up
+Starting nodes with CLI timeout of '5' tries and CLI delay of '3' seconds and using database 'leveldb' with crypto from 'cryptogen'
+LOCAL_VERSION=2.3.2
+DOCKER_IMAGE_VERSION=2.3.2
+/home/kryptos/go/src/github.com/krytposapokalypsis/fabric-samples/test-network/../bin/cryptogen
+Generating certificates using cryptogen tool
+Creating Org1 Identities
++ cryptogen generate --config=./organizations/cryptogen/crypto-config-org1.yaml --output=organizations
+org1.example.com
++ res=0
+Creating Org2 Identities
++ cryptogen generate --config=./organizations/cryptogen/crypto-config-org2.yaml --output=organizations
+org2.example.com
++ res=0
+Creating Orderer Org Identities
++ cryptogen generate --config=./organizations/cryptogen/crypto-config-orderer.yaml --output=organizations
++ res=0
+Generating CCP files for Org1 and Org2
+Creating network "fabric_test" with the default driver
+Creating volume "docker_orderer.example.com" with default driver
+Creating volume "docker_peer0.org1.example.com" with default driver
+Creating volume "docker_peer0.org2.example.com" with default driver
+Creating peer0.org1.example.com ... done
+Creating peer0.org2.example.com ... done
+Creating orderer.example.com    ... done
+Creating cli                    ... done
+CONTAINER ID   IMAGE                               COMMAND             CREATED                  STATUS                  PORTS                                            NAMES
+515be895f987   hyperledger/fabric-tools:latest     "/bin/bash"         Less than a second ago   Up Less than a second                                                    cli
+624219b38217   hyperledger/fabric-orderer:latest   "orderer"           1 second ago             Up Less than a second   0.0.0.0:7050->7050/tcp, 0.0.0.0:7053->7053/tcp   orderer.example.com
+f44649d2f8b0   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   0.0.0.0:7051->7051/tcp                           peer0.org1.example.com
+e2eb5eb9f3c5   hyperledger/fabric-peer:latest      "peer node start"   1 second ago             Up Less than a second   7051/tcp, 0.0.0.0:9051->9051/tcp                 peer0.org2.example.com
