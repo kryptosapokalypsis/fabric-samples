@@ -49,10 +49,13 @@ func (t *ABstore) Init(ctx contractapi.TransactionContextInterface, A string, Av
 }
 
 // Transaction makes payment of X units from A to B
-func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B string, X int) error {
+func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B, C, D string, W, X, Y, Z float64) error {
 	var err error
-	var Aval int
-	var Bval int
+	var Aval float64 = 0.0
+	var Bval float64 = 0.0
+	var Cval float64 = 0.0
+	var Dval float64 = 0.0
+	var Total float64 = 0.0
 	// Get the state from the ledger
 	// TODO: will be nice to have a GetAllState call to ledger
 	Avalbytes, err := ctx.GetStub().GetState(A)
@@ -62,7 +65,7 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B strin
 	if Avalbytes == nil {
 		return fmt.Errorf("Entity not found")
 	}
-	Aval, _ = strconv.Atoi(string(Avalbytes))
+	Aval, _ = strconv.ParseFloat(string(Avalbytes), 64)
 
 	Bvalbytes, err := ctx.GetStub().GetState(B)
 	if err != nil {
@@ -71,25 +74,63 @@ func (t *ABstore) Invoke(ctx contractapi.TransactionContextInterface, A, B strin
 	if Bvalbytes == nil {
 		return fmt.Errorf("Entity not found")
 	}
-	Bval, _ = strconv.Atoi(string(Bvalbytes))
+	Bval, _ = strconv.ParseFloat(string(Bvalbytes), 64)
+
+	Cvalbytes, err := ctx.GetStub().GetState(A)
+	if err != nil {
+		return fmt.Errorf("Failed to get state")
+	}
+	if Cvalbytes == nil {
+		return fmt.Errorf("Entity not found")
+	}
+	Cval, _ = strconv.ParseFloat(string(Cvalbytes), 64)
+
+	Dvalbytes, err := ctx.GetStub().GetState(A)
+	if err != nil {
+		return fmt.Errorf("Failed to get state")
+	}
+	if Dvalbytes == nil {
+		return fmt.Errorf("Entity not found")
+	}
+	Dval, _ = strconv.ParseFloat(string(Dvalbytes), 64)
 
 	// Perform the execution
-	Aval = Aval - X
+	Aval = Aval + W
 	Bval = Bval + X
-	fmt.Printf("Aval = %d, Bval = %d\n", Aval, Bval)
+	Cval = Cval + Y
+	Dval = Dval + Z
+
+	Total = Aval + Bval + Cval + Dval
+
+	fmt.Printf("Aval:  = %d, Bval: %d\n Cval: %d\n Dval:  %d\n  Total: %d\n ", Aval, Bval, Cval, Dval, Total)
 
 	// Write the state back to the ledger
-	err = ctx.GetStub().PutState(A, []byte(strconv.Itoa(Aval)))
+	err = ctx.GetStub().PutState(A, []byte(strconv.FormatFloat(Aval, 'E', -1, 64)))
 	if err != nil {
 		return err
 	}
 
-	err = ctx.GetStub().PutState(B, []byte(strconv.Itoa(Bval)))
+	err = ctx.GetStub().PutState(B, []byte(strconv.FormatFloat(Bval, 'E', -1, 64)))
 	if err != nil {
 		return err
 	}
 
 	return nil
+
+	err = ctx.GetStub().PutState(B, []byte(strconv.FormatFloat(Cval, 'E', -1, 64)))
+	if err != nil {
+		return err
+	}
+
+	return nil
+
+	err = ctx.GetStub().PutState(B, []byte(strconv.FormatFloat(Dval, 'E', -1, 64)))
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
 
 // Delete  an entity from state
